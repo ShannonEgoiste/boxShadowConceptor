@@ -1,0 +1,221 @@
+<!doctype html>
+<html>
+	<head>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css">
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.min.js"></script>
+		<title>boxShadow conceptor</title>
+		
+		<style>
+			@keyframes animatedBackground {
+				from {
+					background-position: 0 0;
+				}
+				to {
+					background-position: 120px 120px;
+				}
+			}
+		
+			body{
+				background-image: linear-gradient(45deg, #77777777 25%, transparent 25%), linear-gradient(-45deg, #77777777 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #77777777 75%), linear-gradient(-45deg, transparent 75%, #77777777 75%);
+				background-size: 60px 60px;
+			}
+		
+			.wrap{
+				position:fixed;
+				top:0;left:0;
+				display:flex;
+				align-items: center;
+				justify-content: center;
+				width:100%;
+				height:100%;
+				z-index:-1;
+				
+			}
+			
+			.boxshadow{
+				padding:50px;
+				min-width:512px;
+				min-height:512px;
+			}
+			
+			.dropwrap{
+				position:fixed;left:5%;bottom:5%;
+				width:100%
+			}
+		
+			.getstyletooltip{
+				position:absolute;
+				bottom:35px;
+				background-color:#FFF;
+				padding:10px;
+				border-radius:4px;
+				box-shadow:1px 1px 10px #333;
+				z-index:-5;
+			}
+		
+			.getStyle{
+				position:absolute;
+				bottom:0;
+				left:0;
+				padding:10px;
+				height:32px;
+				font-weight:bold;
+				border-radius:32px;
+				display:flex;align-items:center;justify-content:center;background-color:#FAFAFA;
+				transition:background-color 0.2s;
+				cursor:pointer;
+			}
+			
+			.getStyle:hover{
+				background-color:#D0D0D0;
+				transition:background-color 0.2s;
+			}
+			
+		</style>
+		
+	</head>
+	<body style='background-color:#002626;animation: animatedBackground 10s linear infinite;'>
+		<nav class="navbar bg-light">
+			<div class="container-fluid">
+				<div class="navbar-brand">BoxShadow conceptor by <a href="https://github.com/shannonEgoiste" style='color:#000'>Shannon Egoiste</a></div>
+			</div>
+		</nav>
+		<div class="input-group input-group-sm">
+				<span class="input-group-text">back color</span>
+				<input type="color" class="form-control form-control-color" value="#002626" oninput="document.querySelector('body').style.backgroundColor = this.value">
+				<span class="input-group-text">back moving</span>
+				<div class="input-group-text">
+					<input class="form-check-input mt-0" type="checkbox" checked onchange='document.querySelector("body").style.animation=this.checked?"animatedBackground 10s linear infinite":"";'>
+				</div>
+				<span class="input-group-text">box color</span>
+				<input type="color" class="form-control form-control-color backColor" value="#FFFFFF" oninput="changeColor()">
+				<span class="input-group-text">box-opacity</span>
+				<input type="number" class="form-control opacity" value="1" oninput="changeColor()">
+				<span class="input-group-text">blur</span>
+				<input type="number" class="form-control" oninput="document.querySelector('.boxshadow').style.backdropFilter = 'blur('+this.value+'px)'">
+				<span class="input-group-text">border radius</span>
+				<input type="number" class="form-control" oninput="document.querySelector('.boxshadow').style.borderRadius = this.value+'px'">
+				<span class="input-group-text">border</span>
+				<input type="text" class="form-control" oninput="document.querySelector('.boxshadow').style.border = this.value">
+		</div>
+		
+		<div class="wrap">
+						
+			<div class="boxshadow" style='background-color:rgba(255,255,255,1);'>					
+				<div class="input-group input-group-sm headerform" style="width:512px">
+					<span class="input-group-text" style="width:32px;font-size:8px">inset</span>
+					<span class="input-group-text" style='width:87px;font-size:8px'>offset X</span>
+					<span class="input-group-text" style='width:87px;font-size:8px'>offset Y</span>
+					<span class="input-group-text" style='width:87px;font-size:8px'>blur</span>
+					<span class="input-group-text" style='width:87px;font-size:8px'>spread</span>
+					<span class="input-group-text" style='width:87px;font-size:8px'>color</span>
+					<span class="input-group-text" style='width:27.58px;font-size:8px'></span>
+					<span class="input-group-text" style='width:24.40px;font-size:8px'></span>
+				</div>
+			</div>
+		</div>
+
+		<template class="tempShaForm">
+			<div class="input-group input-group-sm" style="width:512px">
+				<div class="input-group-text">
+					<input class="form-check-input mt-0" type="checkbox" onchange="set()">
+				</div>
+				<input type="number" class="form-control" placeholder="Off X"  value="0" onchange="set()">
+				<input type="number" class="form-control" placeholder="Off Y"  value="0" onchange="set()">
+				<input type="number" class="form-control" placeholder="blur"   value="0" onchange="set()">
+				<input type="number" class="form-control" placeholder="spread" value="0" onchange="set()">
+				<input type="color" class="form-control form-control-color" value="#000" onchange="set()">
+				<button class="btn btn-secondary" type="button" onclick="addNewGroup()">+</button>
+				<button class="btn btn-danger" type="button" onclick="deleteGroup(this)">x</button>
+			</div>
+		</template>
+
+		<div class="dropwrap">
+			<div class="getStyle" onclick="opentooltip()">
+				Get Box style
+			</div>
+		
+			<div class="getstyletooltip d-none" onfocusout="this.classList.add('d-none')">
+				<textarea class="form-control stylecsstext" cols="100" rows="10"></textarea>
+			</div>
+		</div>
+
+
+		<script>
+			var template = document.querySelector(".tempShaForm");
+			var box = document.querySelector(".boxshadow");
+			
+			addNewGroup();
+			function addNewGroup(){
+				box.appendChild(template.content.querySelector("div").cloneNode(true));
+				set();
+			}
+			
+			function deleteGroup(wich){
+				wich.parentNode.remove();
+				set();
+			}
+			
+			function addToTooltip(){
+				var allProperty = box.attributes.style.textContent.split(";");
+				var style = "";
+				allProperty.forEach(function(elem){
+					if(elem.trim().length < 1) return;
+					style+=elem.trim()+";\n";
+				});
+				
+				
+				document.querySelector(".stylecsstext").value= style;
+			}
+			
+			
+			function set(){
+				var all = document.querySelectorAll(".boxshadow > div:not(.headerform)");
+				var style = "";
+					
+				all.forEach(function(elem,i){
+					elem.querySelectorAll("input").forEach(function(inputval,i){
+						if(i==0){
+							style+=(inputval.checked?"inset ":"");
+						}else if(i == 5){
+							style+=inputval.value;
+						}else{
+							style+=inputval.value+"px ";
+						
+						}
+					});
+					
+					style+=(i < all.length-1?",":"");
+									
+				});
+				
+				box.style.boxShadow = style;
+				
+				addToTooltip();
+			}
+			
+			function changeColor(){
+				var val = document.querySelector(".opacity").value;
+				var backgroundColor = document.querySelector(".backColor").value;
+				box.style.backgroundColor = backgroundColor;
+				
+				var b = box.style.backgroundColor.split(",");
+				
+				var s = b[0]+","+b[1]+","+b[2].replace(")","")+","+val+")";
+				console.log(s);
+				
+				box.style.backgroundColor = s;
+				
+				console.log(box.attributes.style.textContent.split(";"));
+				
+				
+				addToTooltip();
+			}
+						
+			function opentooltip(){
+				document.querySelector(".getstyletooltip").classList.toggle("d-none");
+				document.querySelector(".getstyletooltip textarea").focus();
+			}	
+		</script>
+	</body>
+</html>
